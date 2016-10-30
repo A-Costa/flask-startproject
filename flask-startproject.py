@@ -14,5 +14,12 @@ else:
         sys.exit(1)
     else:
         os.mkdir(projectName)
-        print projectName
-        
+        appFolder = os.path.join(projectName, os.path.basename(projectName))
+        templatesFolder = os.path.join(appFolder, "templates")
+        staticFolder = os.path.join(appFolder, "static")
+        instanceFolder = os.path.join(appFolder, "instance")
+
+        os.mkdir(appFolder)
+        os.mkdir(templatesFolder)
+        os.mkdir(staticFolder)
+        os.mkdir(instanceFolder)
