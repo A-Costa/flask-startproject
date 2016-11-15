@@ -14,6 +14,9 @@ else:
     if os.path.exists(projectPath):
         print 'File or folder with name "{}" already exists. aborting...'.format(projectPath)
         sys.exit(1)
+    if os.system('virtualenv --version')!= 0:
+        print 'Dependency Error: virtualenv not installed. aborting...'
+        sys.exit(1)
     else:
         #create the main folder for the project
         os.mkdir(projectPath)
@@ -29,6 +32,12 @@ else:
         os.mkdir(templatesFolder)
         os.mkdir(staticFolder)
         os.mkdir(instanceFolder)
+
+        #create virtualenv
+        virtualenvpath = os.path.join(projectPath, "venv")
+        os.system('virtualenv ' + virtualenvpath)
+        virtualpythonenv = os.path.join(virtualenvpath, "bin/python")
+        os.system(virtualpythonenv + ' -c "import pip; pip.main([\'install\', \'flask\'])"')
 
         #create file __init__.py
         initFilePath = os.path.join(appFolder, "__init__.py")
@@ -50,7 +59,7 @@ else:
         #create file run.py
         runFilePath = os.path.join(projectPath, "run.py")
         runFile = open(runFilePath, "w+")
-        runFile.write("#!/usr/bin/python\n")
+        runFile.write("#!venv/bin/python\n")
         runFile.write("from {} import app\n\n".format(appName))
         runFile.write("app.run(debug=True, host='0.0.0.0')")
         runFile.close()
