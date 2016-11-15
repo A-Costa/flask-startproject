@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import sys, os
+import sys, os, stat
 
 if len(sys.argv) != 2:
     print "usage: {} <name>".format(sys.argv[0])
@@ -58,7 +58,7 @@ else:
 
         #create file run.py
         runFilePath = os.path.join(projectPath, "run.py")
-        runFile = open(runFilePath, "w+")
+        runFile = open(runFilePath, "w+", stat.S_IXUSR)
         runFile.write("#!venv/bin/python\n")
         runFile.write("from {} import app\n\n".format(appName))
         runFile.write("app.run(debug=True, host='0.0.0.0')")
