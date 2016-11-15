@@ -58,8 +58,9 @@ else:
 
         #create file run.py
         runFilePath = os.path.join(projectPath, "run.py")
-        runFile = open(runFilePath, "w+", stat.S_IXUSR)
+        runFile = open(runFilePath, "w+")
         runFile.write("#!venv/bin/python\n")
         runFile.write("from {} import app\n\n".format(appName))
         runFile.write("app.run(debug=True, host='0.0.0.0')")
         runFile.close()
+        os.chmod(runFilePath, 0775)
