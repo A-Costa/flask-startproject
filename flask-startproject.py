@@ -7,6 +7,7 @@ if len(sys.argv) != 2:
 else:
     projectPath = os.path.abspath(sys.argv[1])
     appName = os.path.basename(projectPath)
+    #check if given path is ok
     if not os.path.exists(os.path.dirname(projectPath)):
         print 'folder: "{}" doesn\'t exist. aborting...'.format(os.path.dirname(projectPath))
         sys.exit(1)
@@ -14,17 +15,22 @@ else:
         print 'File or folder with name "{}" already exists. aborting...'.format(projectPath)
         sys.exit(1)
     else:
+        #create the main folder for the project
         os.mkdir(projectPath)
+
+        #set the names for all other folders needed
         appFolder = os.path.join(projectPath, appName)
         templatesFolder = os.path.join(appFolder, "templates")
         staticFolder = os.path.join(appFolder, "static")
         instanceFolder = os.path.join(appFolder, "instance")
 
+        #create all other folders
         os.mkdir(appFolder)
         os.mkdir(templatesFolder)
         os.mkdir(staticFolder)
         os.mkdir(instanceFolder)
 
+        #create file __init__.py
         initFilePath = os.path.join(appFolder, "__init__.py")
         initFile = open(initFilePath, "w+")
         initFile.write("from flask import Flask\n")
@@ -32,6 +38,7 @@ else:
         initFile.write("from {} import views".format(appName))
         initFile.close()
 
+        #create file views.py
         viewsFilePath = os.path.join(appFolder, "views.py")
         viewsFile = open(viewsFilePath, "w+")
         viewsFile.write("from {} import app\n\n".format(appName))
@@ -40,6 +47,7 @@ else:
         viewsFile.write("    return 'Hello World'\n")
         viewsFile.close()
 
+        #create file run.py
         runFilePath = os.path.join(projectPath, "run.py")
         runFile = open(runFilePath, "w+")
         runFile.write("#!/usr/bin/python\n")
