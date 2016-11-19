@@ -25,7 +25,7 @@ else:
         appFolder = os.path.join(projectPath, appName)
         templatesFolder = os.path.join(appFolder, "templates")
         staticFolder = os.path.join(appFolder, "static")
-        instanceFolder = os.path.join(appFolder, "instance")
+        instanceFolder = os.path.join(projectPath, "instance")
 
         #create all other folders
         os.mkdir(appFolder)
@@ -43,7 +43,8 @@ else:
         initFilePath = os.path.join(appFolder, "__init__.py")
         initFile = open(initFilePath, "w+")
         initFile.write("from flask import Flask\n")
-        initFile.write("app = Flask(__name__)\n\n")
+        initFile.write("app = Flask(__name__, instance_relative_config=True)\n")
+        initFile.write("app.config.from_pyfile('config.py', silent=True)\n\n")
         initFile.write("from {} import views".format(appName))
         initFile.close()
 
@@ -64,3 +65,8 @@ else:
         runFile.write("app.run(debug=True, host='0.0.0.0')")
         runFile.close()
         os.chmod(runFilePath, 0775)
+
+        #create file config.py in instance folder
+        configFilePath = os.path.join(instanceFolder, "config.py")
+        configFile = open(configFilePath, "w+")
+        configFile.close()
